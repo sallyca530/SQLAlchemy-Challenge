@@ -106,7 +106,7 @@ def tobs():
     year = dt.datetime.strptime(last_date.date, '%Y-%m-%d')
     minus_one_year = year - dt.timedelta(days = 365)
 
-    most_active_st_yr = session.query(Measurement.tobs).\
+    most_active_st_yr = session.query(Measurement.date, Measurement.tobs).\
         filter(Measurement.station == "USC00519281", Measurement.date.between(\
         func.strftime('%Y-%m-%d', minus_one_year),
         func.strftime('%Y-%m-%d', year))).all()
