@@ -11,9 +11,9 @@
 ## Part 2: Design Your Climate App
 ### Climate App Flask API - Sample images from start/end route 
 #### 1. Screenshot of before date input.
-![image](Resources/start_end_no_input.png)
+![image](Resources/start_end_no_input.PNG)
 #### 1. Screenshot of after date input (Aug 12-17, 2010).
-![image](Resources/start_end_with_input.png)
+![image](Resources/start_end_with_input.PNG)
 
 
 ## Resources
