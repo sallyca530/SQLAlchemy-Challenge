@@ -17,9 +17,9 @@
 
 
 ## Resources
-#### 1. Used all SQLAlchemy activities to help write code
+#### 1. Used all SQLAlchemy activities to help write code.
 #### 2. Used np.ravel() for stations list. 
 - https://www.educative.io/answers/what-is-the-numpyravel-function-from-numpy-in-python 
 - https://numpy.org/doc/stable/reference/generated/numpy.ravel.html
-#### 3. Used Flask API URL route registration when dealing when troubleshooting. 
+#### 3. Used Flask API URL route registration when dealing with troubleshooting. 
 - https://flask.palletsprojects.com/en/latest/api/#url-route-registrations
