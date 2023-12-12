@@ -102,7 +102,6 @@ def tobs():
     #Query the dates and temperature observations of the 
     # most-active station for the previous year of data.
     last_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
-    last_date.date
     year = dt.datetime.strptime(last_date.date, '%Y-%m-%d')
     minus_one_year = year - dt.timedelta(days = 365)
 
@@ -120,64 +119,58 @@ def tobs():
         t_dict[date] = tobs
         tobs_results.append(t_dict)
     return jsonify(t_dict)
-# #################################################
-# #start route -
-# @app.route("/api/v1.0/<start>")
-# def start(start_date):
-#     session = Session(engine)
+#################################################
+#start route -
+@app.route("/api/v1.0/<start>")
+def st_temp_range(start):
+    session = Session(engine)
 
-#     last_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
+    last_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
+    #minimum temperature, the average temperature, and the maximum temperature for a specified start.
+    start_result = session.query(Measurement.date,func.max(Measurement.tobs),func.avg(Measurement.tobs),func.min(Measurement.tobs)).\
+        filter(Measurement.date.between(\
+                start,
+                last_date.date)).\
+        group_by(Measurement.date).\
+        order_by(Measurement.date).all()
+    session.close()
 
-#     #minimum temperature, the average temperature, 
-#     # and the maximum temperature for a specified start.
-#     start_result = session.query(Measurement.date,func.max(Measurement.tobs),func.avg(Measurement.tobs),func.min(Measurement.tobs)).\
-#         filter(Measurement.date.between(\
-#                 start_date,
-#                 last_date.date)).\
-#         group_by(Measurement.date).\
-#         order_by(Measurement.date).all()
-    
-#     session.close()
+    #Return a JSON list
+    start_tobs=[]
+    for date, tmin, tavg, tmax in start_result:
+        tobs_start_dict={}
+        tobs_start_dict["Date"] = date
+        tobs_start_dict["TMIN"] = tmin
+        tobs_start_dict["TAVG"] = tavg
+        tobs_start_dict["TMAX"] = tmax
+        start_tobs.append(tobs_start_dict)
+    return jsonify(start_tobs)  
+#################################################
+#end route -
+@app.route("/api/v1.0/<start>/<end>")
+def end_temp_range(start, end):
+    session = Session(engine)
 
-#     #Return a JSON list
-#     start_tobs=[]
-#     for date, tmin, tavg, tmax in start_result:
-#         tobs_start_dict={}
-#         tobs_start_dict["Date"] = date
-#         tobs_start_dict["TMIN"] = tmin
-#         tobs_start_dict["TAVG"] = tavg
-#         tobs_start_dict["TMAX"] = tmax
-#         start_tobs.append(tobs_start_dict)
-#     return jsonify(start_tobs)  
-# #################################################
-# #end route -
-# @app.route("/api/v1.0/<start>/<end>")
-# def end(start_date, last_date):
-#     session = Session(engine)
+    #minimum temperature, the average temperature, and the maximum temperature for a specified start-end range.
+    start_result = session.query(Measurement.date,func.max(Measurement.tobs),func.avg(Measurement.tobs),func.min(Measurement.tobs)).\
+        filter(Measurement.date.between(\
+                start,
+                end)).\
+        group_by(Measurement.date).\
+        order_by(Measurement.date).all()
+    session.close()
 
-#     last_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
-
-#     #minimum temperature, the average temperature, 
-#     # and the maximum temperature for a specified start-end range.
-#     start_result = session.query(Measurement.date,func.max(Measurement.tobs),func.avg(Measurement.tobs),func.min(Measurement.tobs)).\
-#         filter(Measurement.date.between(\
-#                 start_date,
-#                 last_date.date)).\
-#         group_by(Measurement.date).\
-#         order_by(Measurement.date).all()
-#     session.close()
-
-#     #Return a JSON list
-#     start_end_tobs=[]
-#     for date, tmin, tavg, tmax in start_result:
-#         tobs_start_end_dict = {}
-#         tobs_start_end_dict["Date"] = date
-#         tobs_start_end_dict["TMIN"] = tmin
-#         tobs_start_end_dict["TAVG"] = tavg
-#         tobs_start_end_dict["TMAX"] = tmax
-#         start_end_tobs.append(tobs_start_end_dict)
-#     return jsonify(start_end_tobs)  
-# #################################################
+    #Return a JSON list
+    start_end_tobs=[]
+    for date, tmin, tavg, tmax in start_result:
+        tobs_start_end_dict = {}
+        tobs_start_end_dict["Date"] = date
+        tobs_start_end_dict["TMIN"] = tmin
+        tobs_start_end_dict["TAVG"] = tavg
+        tobs_start_end_dict["TMAX"] = tmax
+        start_end_tobs.append(tobs_start_end_dict)
+    return jsonify(start_end_tobs)  
+#################################################
 # Run the app
 if __name__ == "__main__":
     app.run(debug=True)
