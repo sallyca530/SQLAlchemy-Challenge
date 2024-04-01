@@ -43,7 +43,7 @@ Find the most recent date in the dataset.
     year = dt.datetime.strptime(last_date.date, '%Y-%m-%d')
     minus_one_year = year - dt.timedelta(days = 365)
 
-Output: datetime.datetime(2017, 8, 23, 0, 0)
+    Output: datetime.datetime(2017, 8, 23, 0, 0)
 
 Retrieve the previous 12 months of precipitation data.
 
@@ -60,9 +60,11 @@ Load the query results into a Pandas DataFrame, set column names, and sort by da
 Plot the results using Matplotlib and print summary statistics.
 
 *Precipitation observations for the previous one year.*
+
 ![image](Resources/precip_plot.png)
 
 *Summary Statistics*
+
 ![image](Resources/Summary_stats.png)
 
 ### Exploratory Station Analysis
@@ -71,7 +73,7 @@ Calculate the total number of stations in the dataset.
 
     session.query(func.count(Station.station)).all()
 
-Output: [(9,)]
+    Output: [(9,)]
 
 Identify the most-active stations and their observation counts.
 
@@ -215,7 +217,7 @@ Stations Route - Return a JSON list of stations from the dataset.
         stations_all = list(np.ravel(stations_list))
         return jsonify(stations_all)
 
-/api/v1.0/tobs: Return a JSON list of temperature observations for the most-active station in the last year.
+Temperature Observations Route - Return a JSON list of temperature observations for the most-active station in the last year.
 
     @app.route("/api/v1.0/tobs")
     def tobs():
@@ -313,9 +315,8 @@ Run the app
 
 
 ## Resources
-#### 1. Used all SQLAlchemy activities to help write code.
-#### 2. Used np.ravel() for stations list. 
+#### 1. Used np.ravel() for stations list. 
 - https://www.educative.io/answers/what-is-the-numpyravel-function-from-numpy-in-python 
 - https://numpy.org/doc/stable/reference/generated/numpy.ravel.html
-#### 3. Used Flask API URL route registration when dealing with troubleshooting. 
+#### 2. Used Flask API URL route registration when dealing with troubleshooting. 
 - https://flask.palletsprojects.com/en/latest/api/#url-route-registrations
